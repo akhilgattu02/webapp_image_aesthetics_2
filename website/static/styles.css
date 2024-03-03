@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1, h3, #countdown_timer {
+    text-align: center;
+}
+
+#countdown_timer {
+    text-align: center;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.flex2 {
+    box-sizing: border-box;
+    width: 48%; 
+    margin: 1%;
+    max-height: 300px;
+}
+
+img {
+    width: 100%;
+    height: auto;
+    max-height: 80vh; /* Set a maximum height based on the viewport height */
+    display: block;
+    object-fit: contain; /* This will ensure that images are scaled correctly */
+}
+
+img:hover {
+    border: 2px solid #331acc;
+}
+
+/* Add this media query for portrait mode */
+/* @media screen and (max-width: 990px) and (orientation: portrait) { */
+    @media screen and (orientation: portrait){
+    .flex2 {
+        width: 100%; /* Display images one below the other in portrait mode */
+        height: 30vh; /* Adjusted height to fit both images within the screen */
+        margin-bottom: 5%; /* Adjusted margin at the bottom for spacing */
+    }
+    
+    p {
+        font-size: 70%; 
+    }
+    h3 {
+        font-size: 90%; 
+    }
+    h1 {
+        font-size: 100%;
+        font-weight: bold;
+    }
+
+    img {
+        height: 100%; /* adjust as needed */
+        object-fit:fill; /* this will ensure that images are scaled correctly */
+    }
+}
+
+/* Add this media query for landscape mode */
+@media screen and (max-width: 990px) and (orientation: landscape) {
+    .flex2 {
+        width: 45%; /* adjust as needed */
+        height: 37vh; /* viewport height */
+    }
+    
+    p {
+        font-size: 70%; 
+    }
+    h3 {
+        font-size: 90%; 
+    }
+    h1 {
+        font-size: 100%;
+        font-weight: bold;
+    }
+
+    img {
+        height: 100%; /* adjust as needed */
+        object-fit: contain; /* this will ensure that images are scaled correctly */
+    }
+}

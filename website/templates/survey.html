@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<!doctype html>
+<html>
+
+<head>
+    <title>Image Survey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        // Add event listener for visibility change
+        document.addEventListener("visibilitychange", function () {
+            if (document.hidden) {
+                // Pause the countdown when the tab is not active
+                clearInterval(countdownTimer);
+            } else {
+                // Resume the countdown when the tab becomes active
+                countdownTimer = setInterval(updateCountdown, 1000);
+            }
+        });
+
+        var imgOne = new Image();
+        var imgTwo = new Image();
+        var imagesLoaded = 0; // Track the number of loaded images
+
+        imgOne.src = "{{ img1[1] }}";
+        imgTwo.src = "{{ img2[1] }}";
+
+        function showImages() {
+            imagesLoaded++;
+            if (imagesLoaded === 2) {
+                // Both images are loaded, show them and start the countdown
+                var image1 = document.getElementById("img_one");
+                var image2 = document.getElementById("img_two");
+                var countdownTimerDiv = document.getElementById("countdown_timer");
+
+                image1.src = imgOne.src;
+                image1.style.display = "block";
+
+                image2.src = imgTwo.src;
+                image2.style.display = "block";
+
+                countdownTimerDiv.style.display = "block";
+
+                // Set up an interval to update the countdown every second
+                countdownTimer = setInterval(updateCountdown, 1000);
+            }
+        }
+
+        // Register the onload event for both images
+        imgOne.onload = imgTwo.onload = function () {
+            showImages();
+        };
+
+        // Function to update the countdown timer
+        function updateCountdown() {
+            var count = document.getElementById("countdown").innerHTML;
+            count--;
+
+            // If countdown reaches 0, reload the page
+            if (count == 0) {
+                window.location.reload();
+            }
+
+            document.getElementById("countdown").innerHTML = count;
+        }
+
+        // Function to submit the form
+        function submitForm(selection, img1, img2) {
+            var form = document.getElementById("surveyForm");
+            var selectionInput = document.getElementById("selectionInput");
+            var img1Input = document.getElementById("img1Input");
+            var img2Input = document.getElementById("img2Input");
+            selectionInput.value = selection;
+            img1Input.value = img1;
+            img2Input.value = img2;
+
+            // Hide the images and countdown timer immediately upon form submission
+            var image1 = document.getElementById("img_one");
+            var image2 = document.getElementById("img_two");
+            var countdownTimerDiv = document.getElementById("countdown_timer");
+            image1.style.display = "none";
+            image2.style.display = "none";
+            countdownTimerDiv.style.display = "none";
+
+            // Submit the form
+            form.submit();
+        }
+    </script>
+</head>
+
+<body>
+    <div id="info" style="margin: 0 auto;">
+        <h1>
+            <center>Visual Survey</center>
+        </h1>
+        <p>
+            <center><b>Please go through these images and choose the one that you like, click on submit to move on to
+                    the next pair.</center>
+        </p>
+    </div>
+    <div id='countdown_timer' style="display: none;">
+        <h3>
+            <center><span id="countdown">5</span></center>
+        </h3>
+    </div>
+    <form id="surveyForm" method="post" action="/submit">
+        <input type="hidden" name="user_id" value="{{ user }}">
+        <input type="hidden" name="survey" value="{{ survey_type }}">
+        <div id="img_container" class="flex-container">
+            <div id="imgs1" class="flex2">
+                <img id="img_one" style="display: none;"
+                    onclick="submitForm('{{ img1[0] }}', '{{ img1[0] }}', '{{ img2[0] }}')">
+            </div>
+            <div id="imgs2" class="flex2">
+                <img id="img_two" style="display: none;"
+                    onclick="submitForm('{{ img2[0] }}', '{{ img1[0] }}', '{{ img2[0] }}')">
+            </div>
+        </div>
+        <input type="hidden" id="selectionInput" name="selection">
+        <input type="hidden" id="img1Input" name="img1">
+        <input type="hidden" id="img2Input" name="img2">
+    </form>
+</body>
+
+</html>
+{% endblock %}

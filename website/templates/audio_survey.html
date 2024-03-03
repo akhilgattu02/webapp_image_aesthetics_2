@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    <!doctype html>
+    <html>
+    
+    <head>
+        <title>Audio Survey</title>
+        <script>
+            function submitForm(selection, aud1, aud2) {
+                var form = document.getElementById ("surveyForm");
+                var selectionInput = document.getElementById("selectionInput");
+                var aud1Input = document.getElementById("aud1Input");
+                var aud2Input = document.getElementById("aud2Input");
+                selectionInput.value = selection;
+                aud1Input.value = aud1;
+                aud2Input.value = aud2;
+                form.submit();
+            }
+
+            const audio1 = document.getElementById('audio-1');
+            const audio2 = document.getElementById('audio-2');
+        
+            const playAudio1Button = document.getElementById('play-audio-1');
+            const playAudio2Button = document.getElementById('play-audio-2');
+        
+            playAudio1Button.addEventListener('click', function() {
+              audio1.play();
+              playAudio1Button.disabled = true;
+            });
+        
+            playAudio2Button.addEventListener('click', function() {
+              audio2.play();
+              playAudio2Button.disabled = true;
+            });
+
+        </script>
+    </head>
+
+    <body>
+        <div id="info" style="margin: 0 auto;">
+            <h1>
+                <center>Audio Survey</center>
+            </h1>
+            <p>
+                <center><b>Please go through these audios and choose the one that you like, click on submit to move on to
+                        the next pair.</center>
+            </p>
+        </div>
+
+        <div id="audio_container" align = "center">
+        <button id="play-audio-1">Play Audio 1</button>
+        <audio id="audio-1">
+          <source src="{{ aud1[1] }}" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        
+        <button id="play-audio-2">Play Audio 2</button>
+        <audio id="audio-2">
+          <source src="{{ aud2[1] }}" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        </div>
+
+        <form id="SelectAudio" method="post" action="/audio_submit">
+            <input type="hidden" name="user_id" value="{{ user }}">
+            <input type="hidden" name="sess_id" value="{{ sess_id }}">
+            <div id="button_container" align="center">
+                <button onclick="submitForm('{{ aud1[0] }}', '{{ aud1[0] }}', '{{ aud2[0] }}')">Audio 1</button>
+                <button onclick="submitForm('{{ aud2[0] }}', '{{ aud1[0] }}', '{{ aud2[0] }}')">Audio 2</button>
+            </div>
+            <input type="hidden" id="selectionInput" name="selection">
+            <input type="hidden" id="aud1Input" name="aud1">
+            <input type="hidden" id="aud2Input" name="aud2">
+        </form>
+
+    </body>
+</html>
+
+{%endblock%}
+
